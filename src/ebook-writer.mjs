@@ -234,7 +234,6 @@ async function loadAndProcessEPubStreaming(bookId) {
     });
 
     let totalInserted = 0;
-
     // 3. 循环遍历每一个章节
     for (
       let chapterIndex = 0;
