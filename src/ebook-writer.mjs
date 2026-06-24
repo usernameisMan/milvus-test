@@ -242,17 +242,17 @@ async function loadAndProcessEPubStreaming(bookId) {
       chapterIndex++
     ) {
       const chapter = epub.flow[chapterIndex];
-      
+
       // 异步读取当前章节的原始 HTML 内容
       const html = await epub.getChapterRawAsync(chapter.id);
-      
+
       // 使用 html-to-text 过滤 HTML，只保留干净的段落文本，去除图片等非文本标签
       const chapterContent = convert(html, {
         wordwrap: false,
         selectors: [
           { selector: "img", format: "skip" },
-          { selector: "a", options: { ignoreHref: true } }
-        ]
+          { selector: "a", options: { ignoreHref: true } },
+        ],
       });
 
       /*
@@ -261,7 +261,9 @@ async function loadAndProcessEPubStreaming(bookId) {
       const chapterContent = chapter.pageContent;
       */
 
-      console.log(`处理第 ${chapterIndex + 1}/${epub.flow.length} 章: ${chapter.title || `第 ${chapterIndex + 1} 章`}...`);
+      console.log(
+        `处理第 ${chapterIndex + 1}/${epub.flow.length} 章: ${chapter.title || `第 ${chapterIndex + 1} 章`}...`,
+      );
 
       // 将本章节切分成若干个 500 字的短 Chunk
       const chunks = await textSplitter.splitText(chapterContent);
